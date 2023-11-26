@@ -4,33 +4,33 @@ from random import randint
 
 class BinsGame:
     
-    def __init__(self, n: int, max_val: int, strategy: IStrategy):
+    def __init__(self, n: int, maxValue: int, strategy: IStrategy):
         self._n = n
-        self._max_val = max_val
+        self._maxValue = maxValue
         self._strategy = strategy
-        self.new_game()
+        self.newGame()
     
-    def new_game(self):
-        self._game_state = [-1 for i in range(self._n)]
+    def newGame(self):
+        self._gameState = [-1 for i in range(self._n)]
         self._drawn = {}
 
     # sample without replacement
     def generate(self):
-        n = randint(1, self._max_val)
+        n = randint(1, self._maxValue)
         while n in self._drawn:
-            n = randint(1, self._max_val)
+            n = randint(1, self._maxValue)
         self._drawn[n] = 1
         return n
     
     def put(self, val: int):
-        put_index = self._strategy.execute(val, self._game_state)
-        if put_index < 0:
+        putIndex = self._strategy.execute(val, self._gameState)
+        if putIndex < 0:
             return 1
-        self._game_state[put_index] = val
+        self._gameState[putIndex] = val
         return 0
     
     def play(self):
-        self.new_game()
+        self.newGame()
         done = 0
         turns = 0
         while done != 1:
@@ -42,4 +42,4 @@ class BinsGame:
         return turns
 
     def toString(self):
-        str(self._game_state)
+        str(self._gameState)

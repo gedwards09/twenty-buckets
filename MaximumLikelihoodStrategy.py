@@ -1,15 +1,12 @@
-from IStrategy import IStrategy
 import math
+from GameStrategy import GameStrategy
 from typing import List
 
-class MaximumLikelihoodStrategy(IStrategy):
+class MaximumLikelihoodStrategy(GameStrategy):
     
-    def __init__(self, max_value: int = 1000):
-        self._max_value = max_value
-    
-    def execute(self, val: int, game_state: List) -> int:
-        n = len(game_state)
-        left, right = MaximumLikelihoodStrategy.get_boundary_indices(val, game_state)
+    def execute(self, val: int, gameState: List) -> int:
+        n = len(gameState)
+        left, right = GameStrategy.getBoundaryIndices(val, gameState)
         if left == right - 1:
             return -1
         if left == right - 2:
@@ -17,34 +14,22 @@ class MaximumLikelihoodStrategy(IStrategy):
         if left < 0:
             nleft = 0
         else:
-            nleft = game_state[left]
+            nleft = gameState[left]
         if right >= n:
-            nright = self._max_value + 1
+            nright = self._maxValue + 1
         else:
-            nright = game_state[right]
+            nright = gameState[right]
         # optimal assuming sample w/o replacement
         threshold = (right - left - 1) * (val - nleft - 1)/(nright - nleft - 2)
         if threshold == 0:
-            put_index = left + 1
+            putIndex = left + 1
         elif threshold == right - left:
-            putindex = right - 1
+            putIndex = right - 1
         else:
-            put_index = left + math.ceil(threshold)
-        if put_index < 0 or put_index >= n or put_index == left or put_index == right:
-            print(val, left, put_index, right, game_state)
-        return put_index
-            
-    def get_boundary_indices(val: int, game_state: List):
-        left = -1
-        right = len(game_state)
-        for i in range(len(game_state)):
-            if game_state[i] == -1:
-                continue
-            elif game_state[i] < val:
-                left = i
-            elif game_state[i] > val and right == len(game_state):
-                right = i
-        return (left, right)
+            putIndex = left + math.ceil(threshold)
+        if putIndex < 0 or putIndex >= n or putIndex == left or putIndex == right:
+            print(val, left, putIndex, right, gameState)
+        return putIndex
         
         
     
