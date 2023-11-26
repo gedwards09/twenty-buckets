@@ -7,18 +7,18 @@ class MaximumLikelihoodStrategy(IStrategy):
     def __init__(self, max_value: int = 1000):
         self._max_value = max_value
     
-    def execute(self, val: int, game_state: List) -> None:
+    def execute(self, val: int, game_state: List) -> int:
+        n = len(game_state)
         left, right = MaximumLikelihoodStrategy.get_boundary_indices(val, game_state)
         if left == right - 1:
-            return 1
+            return -1
         if left == right - 2:
-            game_state[left+1] = val
-            return 0
+            return left + 1
         if left < 0:
             nleft = 0
         else:
             nleft = game_state[left]
-        if right >= len(game_state):
+        if right >= n:
             nright = self._max_value + 1
         else:
             nright = game_state[right]
@@ -30,8 +30,9 @@ class MaximumLikelihoodStrategy(IStrategy):
             putindex = right - 1
         else:
             put_index = left + math.ceil(threshold)
-        if put_index < 0 or put_index >= self.n or put_index == left or put_index == right:
+        if put_index < 0 or put_index >= n or put_index == left or put_index == right:
             print(val, left, put_index, right, game_state)
+        return put_index
             
     def get_boundary_indices(val: int, game_state: List):
         left = -1

@@ -22,8 +22,10 @@ class BinsGame:
         self._drawn[n] = 1
         return n
     
-    def put(self, val):
+    def put(self, val: int):
         put_index = self._strategy.execute(val, self._game_state)
+        if put_index < 0:
+            return 1
         self._game_state[put_index] = val
         return 0
     

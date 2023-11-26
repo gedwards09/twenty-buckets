@@ -3,5 +3,5 @@ from typing import List
 
 class IStrategy(ABC):
     @abstractmethod
-    def execute(self, val: int, game_state: List):
+    def execute(self, val: int, game_state: List) -> int:
         pass
