@@ -1,12 +1,13 @@
 import math
-from GameStrategy import GameStrategy
+from Python.IStrategy import IStrategy
+from Python.GameUtils import GameUtils
 from typing import List
 
-class MaximumLikelihoodStrategy(GameStrategy):
+class MaximumLikelihoodStrategy(IStrategy):
     
-    def execute(self, val: int, gameState: List) -> int:
+    def execute(self, val: int, gameState: List, maxValue: int) -> int:
         n = len(gameState)
-        left, right = GameStrategy.getBoundaryIndices(val, gameState)
+        left, right = GameUtils.getBoundaryIndices(val, gameState)
         if left == right - 1:
             return -1
         if left == right - 2:
@@ -16,7 +17,7 @@ class MaximumLikelihoodStrategy(GameStrategy):
         else:
             nleft = gameState[left]
         if right >= n:
-            nright = self._maxValue + 1
+            nright = maxValue + 1
         else:
             nright = gameState[right]
         # optimal assuming sample w/o replacement

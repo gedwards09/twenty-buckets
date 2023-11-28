@@ -1,8 +1,8 @@
 import math
-from GameStrategy import GameStrategy
+from Python.IStrategy import IStrategy
 from typing import List
 
-class NaiveStrategy(GameStrategy):
+class NaiveStrategy(IStrategy):
         
     def execute(self, val: int, gameState: List) -> int:
         naiveIndex = Math.floor(len(gameState) * (val - 1) / maxValue)

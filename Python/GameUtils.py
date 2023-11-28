@@ -1,10 +1,6 @@
-from IStrategy import IStrategy
 from typing import List
 
-class GameStrategy(IStrategy):
-    
-    def __init__(self, maxValue: int = 1000):
-        self._maxValue = maxValue
+class GameUtils:
             
     def getBoundaryIndices(val: int, gameState: List):
         n = len(gameState)

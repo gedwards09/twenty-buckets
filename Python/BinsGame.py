@@ -1,5 +1,5 @@
 import math
-from IStrategy import IStrategy
+from Python.IStrategy import IStrategy
 from random import randint
 
 class BinsGame:
@@ -9,6 +9,9 @@ class BinsGame:
         self._maxValue = maxValue
         self._strategy = strategy
         self.newGame()
+        
+    def getGameSize(self):
+        return self._n
     
     def newGame(self):
         self._gameState = [-1 for i in range(self._n)]
@@ -23,7 +26,7 @@ class BinsGame:
         return n
     
     def put(self, val: int):
-        putIndex = self._strategy.execute(val, self._gameState)
+        putIndex = self._strategy.execute(val, self._gameState, self._maxValue)
         if putIndex < 0:
             return 1
         self._gameState[putIndex] = val
