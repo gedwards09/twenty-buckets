@@ -1,3 +1,4 @@
+import math
 from Python.BinsGame import BinsGame
 from Python.IStrategy import IStrategy
 
@@ -25,31 +26,34 @@ class GameEngine:
         if self._pmf == None:
             self.simulateGames()
         cumulative = 0
-        for i in range(n):
-            if cumulative == 0 and cumulative + self._pmf[i] >= 0:
-                print("Min.:\t", i)
+        maxturns = 0
+        for i in range(len(self._pmf)):
+            if cumulative == 0 and cumulative + self._pmf[i] > 0:
+                print("Min.:   ", i)
             if cumulative < .25 and cumulative + self._pmf[i] >= .25:
                 print("1st Qu.:", i)
             if cumulative < .5 and cumulative + self._pmf[i] >= .5:
-                print("Median:", i)
-                print("Mean\t:", "{:.2f}%".format(GameEngine.getMean(pmf)))
+                print("Median: ", i)
+                print("Mean:   ", "{:.4f}".format(self.mean()), "(sterr:", "{:.4f})".format(self.standardError()))
             if cumulative < .75 and cumulative + self._pmf[i] >= .75:
                 print("3rd Qu.:", i)
-            if cumulative < 1.0 and cumulative + self._pmf[i] == 1.0:
-                print("Max:\t", i)
+            if self._pmf[i] > 0 and i > maxturns:
+                maxturns = i
             cumulative += self._pmf[i]
-       
+        print("Max:    ", maxturns)
+        print("")
+        print("Win20 Probability:", "1 in {:0f}".format(1/self._pmf[i]))
 
-    def getMean(pmf):
-        if pmf == None:
-            raise ValueError("Probability mass function not defined")
-        return sum([i * pmf[i] for i in range(len(pdf))]) / len(pdf)
+    def mean(self):
+        return self._times * sum([i * self._pmf[i] for i in range(len(self._pmf))]) / self._times
     
-    def getStdrdError(pmf):
-        if pmf == None:
-            raise ValueError("Probability mass function not defined")
-        mean = getMean(pmf)
-        return math.sqrt(sum([(i - mean)**2 * pmf[i] for i in range(len(pdf))]) / (len(pdf) - 1))
+    def standardDeviation(self):
+        mean = self.mean()
+        return math.sqrt( sum([(i - mean)**2 * self._times * self._pmf[i] for i in range(len(self._pmf))]) / (self._times - 1) )
+    
+    def standardError(self):
+        return self.standardDeviation() / math.sqrt(self._times)
+        
                                                                 
                       
                 
